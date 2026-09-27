@@ -1,26 +1,217 @@
 @import "tailwindcss";
 
+/*
+ * MicroWar design tokens.
+ *
+ * Dark-first: plate imagery is dark agar and glowing colonies, and the pigment
+ * colours (pyocyanin cyan, pyoverdine green) only read properly on black.
+ *
+ * The four organism accents are drawn from real phenotype, not decoration —
+ * see PLAN.md §2.1.
+ */
+@theme {
+  --color-void: #07090f;
+  --color-panel: #0e1220;
+  --color-raised: #161b2e;
+  --color-hair: #232a42;
+
+  --color-ink-high: #f2f5ff;
+  --color-ink-mid: #a8b0c8;
+  --color-ink-low: #5f6884;
+
+  --color-ecoli: #b8ff3c;
+  --color-strep: #ff3b5c;
+  --color-pseudo: #2fe6d6;
+  --color-acineto: #ffb020;
+
+  --color-foil-a: #7b5cff;
+  --color-foil-b: #2fe6d6;
+  --color-gold: #e8c46a;
+
+  --font-display: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-mono), ui-monospace, "SF Mono", monospace;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: dark;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html,
+body {
+  background: var(--color-void);
+  color: var(--color-ink-high);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Display type ───────────────────────────────────────────────────────── */
+
+.display {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 0.92;
+  text-transform: uppercase;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-ink-low);
+}
+
+/* ── Foil ───────────────────────────────────────────────────────────────── */
+
+.foil-text {
+  background: linear-gradient(
+    100deg,
+    var(--color-foil-a) 0%,
+    var(--color-foil-b) 38%,
+    var(--color-gold) 62%,
+    var(--color-foil-a) 100%
+  );
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: foil-drift 8s ease-in-out infinite;
+}
+
+@keyframes foil-drift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Diagonal shine that sweeps a card on hover. */
+.foil-sweep::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 35%,
+    rgba(255, 255, 255, 0.13) 46%,
+    rgba(255, 255, 255, 0.28) 50%,
+    rgba(255, 255, 255, 0.13) 54%,
+    transparent 65%
+  );
+  background-size: 250% 250%;
+  background-position: 120% 120%;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.group:hover .foil-sweep::after {
+  opacity: 1;
+  animation: foil-shine 0.9s ease-out;
+}
+
+@keyframes foil-shine {
+  from {
+    background-position: 120% 120%;
+  }
+  to {
+    background-position: -40% -40%;
+  }
+}
+
+/* ── Colonies grow, they don't fade ─────────────────────────────────────── */
+
+@keyframes colony-grow {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes pulse-live {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+.live-dot {
+  animation: pulse-live 1.6s ease-in-out infinite;
+}
+
+/* ── Ticker ─────────────────────────────────────────────────────────────── */
+
+@keyframes ticker-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.ticker-track {
+  animation: ticker-scroll 48s linear infinite;
+}
+
+.ticker-track:hover {
+  animation-play-state: paused;
+}
+
+/* ── Utilities ──────────────────────────────────────────────────────────── */
+
+.hairline {
+  border-color: var(--color-hair);
+}
+
+.grain::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.22;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+}
+
+::selection {
+  background: var(--color-foil-a);
+  color: #fff;
+}
+
+/* Thin scrollbars so dense tables don't get chunky chrome. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-hair) transparent;
+}
+
+/* ── Reduced motion ─────────────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+
+  .ticker-track {
+    animation: none;
+  }
 }
