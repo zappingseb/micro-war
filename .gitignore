@@ -42,3 +42,7 @@ next-env.d.ts
 
 # Static export output
 /out/
+
+# Local deploy credentials — never commit
+.env.deploy
+.env.local
