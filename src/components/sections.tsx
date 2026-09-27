@@ -52,13 +52,13 @@ export function Hero({ season, feature }: { season: Season; feature: Challenge }
 
         <div className="mt-10 flex flex-wrap items-center gap-3">
           <Link
-            href="/login"
+            href="/challenges/pyocyanin-open/"
             className="rounded-full bg-ink-high px-6 py-3 font-mono text-[12px] font-semibold uppercase tracking-[0.18em] text-void transition hover:bg-white"
           >
             Enter a strain
           </Link>
           <Link
-            href="#watch"
+            href="/watch/"
             className="inline-flex items-center gap-2 rounded-full border border-hair px-6 py-3 font-mono text-[12px] uppercase tracking-[0.18em] text-ink-high transition hover:border-ink-mid"
           >
             <span className="live-dot h-2 w-2 rounded-full bg-strep" aria-hidden />
@@ -105,7 +105,7 @@ export function Drops({ challenges }: { challenges: Challenge[] }) {
   return (
     <section id="drops" className="scroll-mt-16 py-16 sm:py-20">
       <Container>
-        <SectionHead eyebrow="New drops" title="Open challenges" href="#drops" />
+        <SectionHead eyebrow="New drops" title="Open challenges" href="/challenges/" />
         <ul className="mb-6 flex flex-wrap gap-2" aria-label="Challenge tracks">
           {Object.values(TRACKS).map((t) => (
             <li key={t.id} className="rounded-full border border-hair px-3 py-1 font-mono text-[10px] uppercase tracking-[0.16em] text-ink-mid" title={`${t.objective} — ${t.readout}`}>
@@ -114,11 +114,11 @@ export function Drops({ challenges }: { challenges: Challenge[] }) {
           ))}
         </ul>
         <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-          {challenges.map((c) => {
+          {challenges.map((c, i) => {
             const o = organism(c.organism);
             const t = track(c.track);
             return (
-              <article key={c.id} className="group flex flex-col overflow-hidden rounded-xl border border-hair bg-panel transition hover:border-ink-low">
+              <article key={c.id} className="reveal group flex flex-col overflow-hidden rounded-xl border border-hair bg-panel transition hover:border-ink-low" style={{ "--d": `${i * 90}ms` } as React.CSSProperties}>
                 <div className="relative aspect-[4/3] overflow-hidden bg-void">
                   <PlateArt art={c.art} className="absolute left-1/2 top-1/2 h-[140%] w-auto -translate-x-1/2 -translate-y-[42%] transition duration-700 group-hover:scale-105" animate={false} title={`${c.name} plate`} />
                   <div className="absolute left-3 top-3 flex gap-2">
@@ -146,10 +146,10 @@ export function Drops({ challenges }: { challenges: Challenge[] }) {
                   <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.16em] text-ink-low">{MODE_LABEL[c.submissionMode]} · min n={c.replicateFloor}</p>
                 </div>
                 <Link
-                  href="/login"
+                  href={`/challenges/${c.slug}/`}
                   className="block bg-ink-high py-3 text-center font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-void transition group-hover:bg-white"
                 >
-                  {c.status === "open" ? `Enter · ${c.submissionMode}` : "Notify me"}
+                  {c.status === "open" ? `Enter · ${c.submissionMode}` : "Details"}
                 </Link>
               </article>
             );
@@ -272,7 +272,7 @@ export function Watch({ streams }: { streams: Stream[] }) {
   return (
     <section id="watch" className="scroll-mt-16 border-y border-hair bg-panel/40 py-16 sm:py-20">
       <Container>
-        <SectionHead eyebrow="Watch" title="Live now" href="#watch" cta="Schedule" />
+        <SectionHead eyebrow="Watch" title="Live now" href="/watch/" cta="Open the stream" />
         <div className="grid gap-5 lg:grid-cols-[1.6fr_1fr]">
           <div className="relative overflow-hidden rounded-xl border border-hair bg-void">
             <div className="aspect-video">
@@ -410,7 +410,7 @@ export function Footer() {
           <Link href="#board" className="hover:text-ink-high">Boards</Link>
           <Link href="#vault" className="hover:text-ink-high">Cards</Link>
           <Link href="#houses" className="hover:text-ink-high">Houses</Link>
-          <Link href="/login" className="hover:text-ink-high">Log in</Link>
+          <Link href="/account/" className="hover:text-ink-high">Account</Link>
         </nav>
       </Container>
     </footer>

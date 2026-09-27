@@ -2,6 +2,7 @@ import { getSeason, getTicker, listCards, listChallenges, listFixtures, listHous
 import { Nav } from "@/components/Nav";
 import { Board, Drops, Footer, Hero, Houses, HowItWorks, Ticker, Vault, Watch } from "@/components/sections";
 import { Instrument } from "@/components/Instrument";
+import { KineticIntro } from "@/components/KineticIntro";
 
 export default async function Home() {
   const [season, challenges, houses, cards, fixtures, streams, ticker] = await Promise.all([
@@ -24,7 +25,8 @@ export default async function Home() {
       <main className="flex-1">
         <Hero season={season} feature={feature} />
         <Ticker items={ticker} houses={houses} />
-        <Drops challenges={challenges} />
+        <KineticIntro />
+        <Drops challenges={challenges.filter((c) => c.status !== "closed")} />
         <Board fixtures={fixtures} houses={houses} cards={cards} />
         <Vault cards={featured} houses={houses} />
         <Instrument />

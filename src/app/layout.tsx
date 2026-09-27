@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Barlow_Condensed, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
+import { RevealObserver } from "@/components/RevealObserver";
 
 /*
  * Three faces, per PLAN.md §5.2: a heavy condensed grotesque for display,
@@ -44,7 +45,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${display.variable} ${sans.variable} ${mono.variable} h-full antialiased`}>
-      <body className="flex min-h-full flex-col">{children}</body>
+      <body className="flex min-h-full flex-col">
+        {children}
+        <RevealObserver />
+      </body>
     </html>
   );
 }

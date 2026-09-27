@@ -13,9 +13,11 @@ import {
   ORGANISMS,
   SEASON,
   STREAMS,
+  SUBMISSIONS,
   TICKER,
   TRACKS,
 } from "./fixtures";
+import { buildResults, type ChallengeResults } from "./results";
 import type {
   Card,
   Challenge,
@@ -25,6 +27,7 @@ import type {
   OrganismId,
   Season,
   Stream,
+  Submission,
   TickerItem,
   Track,
   TrackId,
@@ -86,6 +89,19 @@ export async function listStreams(): Promise<Stream[]> {
 export async function getTicker(): Promise<TickerItem[]> {
   await latency();
   return TICKER;
+}
+
+/** Full results for a challenge: replicates, summaries, tests, regression. */
+export async function getResults(slug: string): Promise<ChallengeResults | null> {
+  await latency();
+  const c = CHALLENGES.find((x) => x.slug === slug);
+  return c ? buildResults(c, HOUSES) : null;
+}
+
+/** The signed-in participant's submissions (demo: a fixed house). */
+export async function listSubmissions(): Promise<Submission[]> {
+  await latency();
+  return SUBMISSIONS;
 }
 
 /** Reference data is synchronous — it is part of the game's rules, not its state. */

@@ -258,3 +258,45 @@ export interface Season {
   sealedOpensAt: string;
   strapline: string;
 }
+
+/* ── Participant surface ───────────────────────────────────────────────── */
+
+export type SubmissionStage =
+  | "draft"
+  | "submitted"
+  | "safety-review"
+  | "accepted"
+  | "shipped"
+  | "received"
+  | "accessioned"
+  | "qc"
+  | "plated"
+  | "incubating"
+  | "imaged"
+  | "analysed"
+  | "scored"
+  | "published"
+  | "disputed";
+
+export interface SubmissionEvent {
+  stage: SubmissionStage;
+  /** ISO timestamp. */
+  at: string;
+  actor: string;
+  /** The artefact that proves the stage: tracking number, barcode, run ID… */
+  artefact?: string;
+}
+
+export interface Submission {
+  id: string;
+  challengeSlug: string;
+  kind: "strain" | "media";
+  accession: string;
+  name: string;
+  organism: OrganismId;
+  stage: SubmissionStage;
+  events: SubmissionEvent[];
+  /** Populated once a card has been minted. */
+  cardId?: string;
+  art: PlateArt;
+}

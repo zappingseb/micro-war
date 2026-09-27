@@ -20,7 +20,7 @@ export function SectionHead({
   cta?: string;
 }) {
   return (
-    <div className="mb-8 flex items-end justify-between gap-6">
+    <div className="reveal mb-8 flex items-end justify-between gap-6">
       <div>
         <p className="eyebrow mb-2">{eyebrow}</p>
         <h2 className="display text-3xl text-ink-high sm:text-4xl">{title}</h2>

@@ -294,3 +294,110 @@ body {
     opacity: 1;
   }
 }
+
+/* ── Scroll reveal ──────────────────────────────────────────────────────── */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  filter: blur(8px);
+  transition:
+    opacity 0.9s cubic-bezier(0.2, 0.8, 0.2, 1),
+    transform 0.9s cubic-bezier(0.2, 0.8, 0.2, 1),
+    filter 0.9s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition-delay: var(--d, 0ms);
+}
+
+.reveal.is-in {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+
+/* ── Kinetic intro (all motion is a function of --p) ────────────────────── */
+
+.kinetic {
+  --p: 0;
+}
+
+.k-outline {
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--color-ink-mid);
+}
+
+.k-line {
+  will-change: transform, opacity;
+}
+
+.k-line-1 {
+  transform: translateX(calc((0.35 - var(--p)) * 45vw)) skewX(calc((0.35 - var(--p)) * -18deg));
+  opacity: clamp(0, calc(var(--p) * 4), 1);
+}
+
+.k-line-2 {
+  transform: translateX(calc((var(--p) - 0.45) * -40vw)) skewX(calc((var(--p) - 0.45) * 14deg));
+  opacity: clamp(0, calc((var(--p) - 0.12) * 4), 1);
+}
+
+.k-line-3 {
+  transform: scale(calc(0.55 + var(--p) * 0.6)) rotate(calc((0.5 - var(--p)) * 5deg));
+  transform-origin: left center;
+  opacity: clamp(0, calc((var(--p) - 0.25) * 4), 1);
+  filter: blur(calc(max(0px, (0.45 - var(--p)) * 30px)));
+}
+
+.k-letter {
+  color: var(--color-ink-high);
+  transform: translateY(calc((var(--p) - 0.6) * var(--i) * -10vh)) rotate(calc((var(--p) - 0.6) * var(--i) * 25deg))
+    scale(calc(1 + (var(--p) - 0.6) * 0.4));
+  opacity: clamp(0, calc((var(--p) - 0.35) * 5), 1);
+  filter: hue-rotate(calc(var(--p) * 180deg));
+  color: color-mix(in oklab, var(--color-pseudo) calc(var(--p) * 100%), var(--color-ink-high));
+  will-change: transform;
+}
+
+.k-caption {
+  opacity: clamp(0, calc((var(--p) - 0.55) * 5), 1);
+  transform: translateY(calc((1 - var(--p)) * 40px));
+}
+
+.k-plate {
+  will-change: transform;
+}
+
+.k-plate-a {
+  transform: translateY(calc((0.5 - var(--p)) * 60vh)) rotate(calc(var(--p) * 40deg));
+}
+
+.k-plate-b {
+  transform: translateY(calc((0.5 - var(--p)) * 120vh)) rotate(calc(var(--p) * -60deg)) scale(calc(0.8 + var(--p) * 0.5));
+}
+
+.k-plate-c {
+  transform: translateY(calc((0.5 - var(--p)) * 30vh)) translateX(calc(var(--p) * -20vw));
+  filter: hue-rotate(calc(var(--p) * 90deg));
+}
+
+.k-marquee {
+  transform: translateX(calc(var(--p) * -50%));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kinetic {
+    --p: 0.7;
+  }
+  .k-line,
+  .k-letter,
+  .k-plate,
+  .k-caption,
+  .k-marquee {
+    transform: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}

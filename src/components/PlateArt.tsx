@@ -23,6 +23,10 @@ function mulberry32(seed: number) {
 const C = 100;
 const R = 90;
 
+/* Transcendental functions differ in the last bit between Node and browser
+ * engines; rounding keeps server HTML and client render byte-identical. */
+const r2 = (n: number) => Math.round(n * 100) / 100;
+
 export type ColonyPoint = { x: number; y: number; r: number; accent: boolean };
 
 /** Colony positions for the `colonies` pattern; shared with the Plate HUD overlay. */
@@ -35,7 +39,7 @@ export function colonyPoints(art: PlateArtSpec): ColonyPoint[] {
     const s = 2.2 + rnd() * 5.5;
     const accent = rnd() < 0.18;
     rnd(); // opacity draw, kept so the sequence matches the renderer
-    return { x: C + Math.cos(a) * d, y: C + Math.sin(a) * d, r: s, accent };
+    return { x: r2(C + Math.cos(a) * d), y: r2(C + Math.sin(a) * d), r: r2(s), accent };
   });
 }
 
@@ -111,14 +115,7 @@ export function PlateArt({ art, className, animate = true, title }: Props) {
             const a = rnd() * Math.PI * 2;
             const d = 42 + rnd() * (R - 46);
             return (
-              <circle
-                key={i}
-                cx={C + Math.cos(a) * d}
-                cy={C + Math.sin(a) * d}
-                r={1.2 + rnd() * 1.8}
-                fill={art.colony}
-                opacity={0.5}
-              />
+              <circle key={i} cx={r2(C + Math.cos(a) * d)} cy={r2(C + Math.sin(a) * d)} r={r2(1.2 + rnd() * 1.8)} fill={art.colony} opacity={0.5} />
             );
           })}
           <circle cx={C} cy={C} r={40} fill={`url(#${uid}-clear)`} {...grow(2)} />
@@ -161,15 +158,7 @@ export function PlateArt({ art, className, animate = true, title }: Props) {
             const a = rnd() * Math.PI * 2;
             const d = Math.sqrt(rnd()) * (R - 14);
             return (
-              <circle
-                key={i}
-                cx={C + Math.cos(a) * d}
-                cy={C + Math.sin(a) * d}
-                r={3 + rnd() * 6}
-                fill={art.agar}
-                opacity={0.9}
-                {...grow(i + 1)}
-              />
+              <circle key={i} cx={r2(C + Math.cos(a) * d)} cy={r2(C + Math.sin(a) * d)} r={r2(3 + rnd() * 6)} fill={art.agar} opacity={0.9} {...grow(i + 1)} />
             );
           })}
         </g>
