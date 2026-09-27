@@ -1,36 +1,44 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# MicroWar
 
-## Getting Started
+**The open league for antimicrobial and bioproduction discovery.**
 
-First, run the development server:
+A Kaggle-style competitive benchmarking platform for microbiology labs, wrapped in a
+collectible-card-game presentation layer. Labs submit strains and media; every entry is
+scored on automated plate-imaging data; results become cards, league tables and streams.
+See [PLAN.md](PLAN.md) for the full product plan.
+
+This repository is the **Phase 0 demo**: a Next.js static export over a mock backend.
+No server, no database. All data is illustrative and no real plate imagery is used —
+plates are drawn procedurally in SVG from a seeded descriptor.
+
+## Develop
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev        # http://localhost:3000
+npm run lint
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Build & deploy
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The site is served from a subdirectory (`/documents/micro-war/`), so `basePath` is
+read from `NEXT_PUBLIC_BASE_PATH` (see `.env.example`).
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build        # root-domain build → out/
+npm run build:demo   # subpath build for engel-wolf.com
+npm run deploy:dry   # build + show what would be uploaded
+npm run deploy       # build + mirror out/ via FTP (credentials from ../music_blog/.env)
+```
 
-## Learn More
+Entry point after deploy: `https://engel-wolf.com/documents/micro-war/index.html`
 
-To learn more about Next.js, take a look at the following resources:
+## Layout
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+src/app/            routes: / (landing), /login (mode chooser)
+src/lib/types.ts    domain model (PLAN.md §7)
+src/lib/fixtures.ts demo data — houses, cards, challenges, fixtures, streams
+src/lib/api.ts      the mock backend seam; the only module that knows where data lives
+src/components/     PlateArt (procedural plates), PlateHUD, FoilCard, sections, islands
+```

@@ -184,8 +184,7 @@ body {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  opacity: 0.22;
-  mix-blend-mode: overlay;
+  opacity: 0.07;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
 }
 
@@ -213,5 +212,85 @@ body {
 
   .ticker-track {
     animation: none;
+  }
+}
+
+/* ── Colony growth (SVG) ────────────────────────────────────────────────── */
+
+.colony {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: colony-grow 1.1s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+/* ── Foil card tilt & border ────────────────────────────────────────────── */
+
+.tilt {
+  --rx: 0deg;
+  --ry: 0deg;
+  --sx: 50%;
+  --sy: 50%;
+  transform: perspective(1000px) rotateX(var(--rx)) rotateY(var(--ry));
+  transition: transform 0.18s ease-out;
+  transform-style: preserve-3d;
+}
+
+.tilt:hover {
+  transition: transform 0.06s linear;
+}
+
+.foil-border {
+  background: linear-gradient(
+    130deg,
+    var(--color-foil-a),
+    var(--color-foil-b),
+    var(--color-gold),
+    var(--color-foil-a)
+  );
+  background-size: 300% 300%;
+  animation: foil-drift 6s ease-in-out infinite;
+  box-shadow: 0 0 40px -12px rgba(123, 92, 255, 0.55);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* ── Card frame (Magic-style) ───────────────────────────────────────────── */
+
+.card-frame {
+  background:
+    linear-gradient(160deg, color-mix(in srgb, var(--accent) 34%, #0b0e17) 0%, #0b0e17 45%, color-mix(in srgb, var(--accent) 18%, #0b0e17) 100%);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 20px 50px -20px rgba(0, 0, 0, 0.9);
+}
+
+.card-bar {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(0, 0, 0, 0.35));
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.card-textbox {
+  background: linear-gradient(180deg, rgba(8, 10, 18, 0.92), rgba(8, 10, 18, 0.8));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.hud-ring {
+  animation: hud-pulse 2.4s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+@keyframes hud-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
   }
 }
