@@ -1,7 +1,8 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { login, type Mode } from "@/lib/session";
+
+const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
 const MODES: { mode: Mode; glyph: string; title: string; blurb: string; note: string; rails: string; foil: boolean }[] = [
   {
@@ -26,13 +27,13 @@ const MODES: { mode: Mode; glyph: string; title: string; blurb: string; note: st
 
 /** The two facing cards of the Login → mode split (PLAN.md §1.1). */
 export function LoginCards() {
-  const router = useRouter();
-
   const enter = (mode: Mode) => {
     login(mode);
     const next = new URLSearchParams(window.location.search).get("next");
-    const safe = next && next.startsWith("/") && !next.startsWith("//") ? next : null;
-    router.push(safe ?? (mode === "participant" ? "/account/" : "/challenges/"));
+    // `next` is an in-app path without the basePath; a full navigation avoids
+    // the client router fetching payloads that a static host may not serve.
+    const safe = next && /^\/[a-z0-9\-\/]*$/i.test(next) && !next.startsWith("//") ? next : null;
+    window.location.assign(BASE + (safe ?? (mode === "participant" ? "/account/" : "/challenges/titer-cup-ii/")));
   };
 
   return (

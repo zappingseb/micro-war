@@ -5,6 +5,7 @@ import { Container } from "./ui";
 
 const LINKS = [
   ["Challenges", "/challenges/"],
+  ["Results", "/challenges/titer-cup-ii/"],
   ["Boards", "/#board"],
   ["Houses", "/#houses"],
   ["Cards", "/#vault"],

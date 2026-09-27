@@ -20,7 +20,7 @@ export function SessionChip() {
   return (
     <span className="flex items-center gap-2">
       <Link
-        href={participant ? "/account/" : "/challenges/"}
+        href={participant ? "/account/" : "/challenges/titer-cup-ii/"}
         className={`rounded-full border px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.18em] ${participant ? "border-foil-a/60 text-foil-b" : "border-hair text-ink-mid"}`}
       >
         {participant ? "◈ participant" : "◉ spectator"}

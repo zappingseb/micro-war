@@ -101,6 +101,34 @@ export function Ticker({ items, houses }: { items: TickerItem[]; houses: House[]
 
 /* ── New drops ───────────────────────────────────────────────────────────── */
 
+export function ResultsBanner({ challenge }: { challenge: Challenge }) {
+  return (
+    <section className="border-b border-hair bg-panel/40">
+      <Container className="py-6">
+        <Link
+          href={`/challenges/${challenge.slug}/`}
+          className="reveal group flex flex-col gap-4 rounded-2xl border border-gold/40 bg-panel p-5 transition hover:border-gold sm:flex-row sm:items-center"
+        >
+          <div className="h-16 w-16 shrink-0 overflow-hidden rounded-full ring-1 ring-white/10">
+            <PlateArt art={challenge.art} animate={false} className="h-full w-full" />
+          </div>
+          <div className="min-w-0 flex-1">
+            <div className="flex flex-wrap items-center gap-2">
+              <Badge tone="gold">Results are in</Badge>
+              <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-ink-low">sealed panel revealed {fmtDate(challenge.sealedRevealAt)}</span>
+            </div>
+            <h2 className="display mt-1 text-2xl text-ink-high">{challenge.name} · {challenge.subtitle.replace(" · closed", "")}</h2>
+            <p className="text-sm text-ink-mid">Welch tests against the reference, Holm-corrected, ANOVA, and the public-vs-sealed regression with prediction bands. Spectator login required.</p>
+          </div>
+          <span className="shrink-0 rounded-full bg-ink-high px-5 py-2.5 font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-void transition group-hover:bg-white">
+            Open results →
+          </span>
+        </Link>
+      </Container>
+    </section>
+  );
+}
+
 export function Drops({ challenges }: { challenges: Challenge[] }) {
   return (
     <section id="drops" className="scroll-mt-16 py-16 sm:py-20">

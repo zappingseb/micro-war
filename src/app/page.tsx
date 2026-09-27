@@ -1,6 +1,6 @@
 import { getSeason, getTicker, listCards, listChallenges, listFixtures, listHouses, listStreams } from "@/lib/api";
 import { Nav } from "@/components/Nav";
-import { Board, Drops, Footer, Hero, Houses, HowItWorks, Ticker, Vault, Watch } from "@/components/sections";
+import { Board, Drops, Footer, Hero, Houses, HowItWorks, ResultsBanner, Ticker, Vault, Watch } from "@/components/sections";
 import { Instrument } from "@/components/Instrument";
 import { KineticIntro } from "@/components/KineticIntro";
 
@@ -26,6 +26,9 @@ export default async function Home() {
         <Hero season={season} feature={feature} />
         <Ticker items={ticker} houses={houses} />
         <KineticIntro />
+        {challenges.filter((c) => c.status === "closed").map((c) => (
+          <ResultsBanner key={c.id} challenge={c} />
+        ))}
         <Drops challenges={challenges.filter((c) => c.status !== "closed")} />
         <Board fixtures={fixtures} houses={houses} cards={cards} />
         <Vault cards={featured} houses={houses} />
